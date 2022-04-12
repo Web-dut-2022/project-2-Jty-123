@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User,auctions
 
 
 def index(request):
@@ -61,3 +61,16 @@ def register(request):
         return HttpResponseRedirect(reverse("index"))
     else:
         return render(request, "auctions/register.html")
+#active listing 
+#view all of the currently active auction listings
+def activeListing(request):
+    return render(request, "auctions/index.html",{
+        "auctions":auctions.objects.all()
+    })
+#create listing 
+#view the create listings page
+def createListings(request):
+    return render(request, "auctions/create.html")
+
+def createListingView(request):
+    return render(request, "auctions/create.html")

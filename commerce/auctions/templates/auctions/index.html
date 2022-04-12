@@ -2,6 +2,19 @@
 
 {% block body %}
     <h2>Active Listings</h2>
-
-    TODO
+    {%for auction in auctions %}
+    <ui>
+        <div id="div1">
+            <img src="{{auction.image}}" width="500px" height="300px">
+        </div>
+        <div id="div2">
+            <h2>{{ auction.title }}</h2>
+            <br/>
+            <p>price: {{ auction.startbid }}</p>
+            <br/>
+            <p>{{ auction.description }}</p>
+            <p>{{ auction.createTime }}</p>
+        </div>
+    </ui>
+    {% endfor %}
 {% endblock %}
