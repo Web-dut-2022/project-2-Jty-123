@@ -12,4 +12,5 @@ urlpatterns = [
     path("categories", views.categories, name="categories"),
     path("createListingView", views.createListingView, name="createListingView"),
     re_path(r'^category/(.+)/$', views.listcategory, name="listcategory"),
+    re_path(r'^specific/(.+)/$', views.specificPage, name="specificPage"),
 ]

@@ -1,0 +1,44 @@
+{% extends "auctions/layout.html" %}
+
+{% block body %}
+    <h2>Listing:{{auction.title}}</h2>
+    <div>
+        <img src="{{auction.image}}" width="500px" height="300px">
+    </div>
+    <div>
+        {% if isInWatchList == False %}
+        <a>
+            <button class="btn btn-primary">add</button>
+        </a>
+        {%else%}
+        <a>
+            <button class="btn btn-primary">remove</button>
+        </a>
+        {%endif%}
+        {%if sameOwner == True%}
+        <a>
+            <button class="btn btn-primary">close</button>
+        </a>
+        {%endif%}
+
+    </div>
+    <div>
+        <h3>Description:</h3>
+        <h4>{{ auction.description }}</h4>
+        <br/>
+        <h3>Now Price: ${{ nowPrice  }}</h3>
+        <br/>
+        {% if user.is_authenticated %}
+        <form action="" method="">
+            <div class="form-group">
+                <input autofocus class="form-control" type="text" name="newBid" placeholder="Bid">
+            </div>
+            <input class="btn btn-primary" type="submit" value="Bid">
+        </form>
+        {% endif %}
+    </div>
+    <h3>Comments</h3>
+    {% for comment in comments%}
+    
+    {%endfor%}
+{% endblock %}

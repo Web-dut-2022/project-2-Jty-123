@@ -21,9 +21,12 @@ class auctions(models.Model):
     category= models.CharField('类别', max_length=64)
     image=models.CharField('图片url',max_length=256)
     createTime = models.CharField('创建时间',max_length=128)
+    createby = models.CharField('创建者',max_length=128)
 
 class bids(models.Model):
-    pass 
+    title=models.CharField('商品名称', max_length=64)
+    nowbid = models.CharField('现在价格', max_length=64)
+    createby = models.CharField('竞拍发起者', max_length=64)
 
 
 class wathclist(models.Model):
