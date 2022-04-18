@@ -1,14 +1,16 @@
+from re import I, S
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-
 from .models import User,auctions
-
+import time
+import random
+defaultimage  ="https://bkimg.cdn.bcebos.com/pic/d6ca7bcb0a46f21f73ed0799fd246b600d33ae1b?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg"
 
 def index(request):
-    return render(request, "auctions/index.html")
+    return render(request, "auctions/layout.html")
 
 
 def login_view(request):
@@ -73,4 +75,30 @@ def createListings(request):
     return render(request, "auctions/create.html")
 
 def createListingView(request):
-    return render(request, "auctions/create.html")
+    title=request.POST["title"]
+    description=request.POST["description"]
+    startingBid=request.POST["startingBid"]
+    image=request.POST["image"]
+    if image=="":
+        image = defaultimage
+    Category=request.POST["Category"]
+    createTime = time.asctime( time.localtime(time.time()) )
+    createTime = str(createTime)
+    auction =auctions(title=title,description=description,startbid=startingBid,image=image,category=Category,createTime=createTime)
+    auction.save()
+    return render(request, "auctions/index.html",{
+    })
+
+#Categories page
+#return all the categories
+def categories(request):
+    return render(request, "auctions/categroies.html",{
+        "auctions":auctions.objects.all()
+    })
+#Categories page
+#specific categories
+def listcategory(request,param):
+    return render(request,"auctions/categroy.html",{
+        "auctions":auctions.objects.filter(category=param),
+        "categroy":param
+    })

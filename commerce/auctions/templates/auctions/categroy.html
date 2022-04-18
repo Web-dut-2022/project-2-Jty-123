@@ -1,10 +1,10 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <h2>Active Listings</h2>
+    <h2>{{categroy}}</h2>
     {%for auction in auctions %}
     <ui>
-        <a href="" style="color: black">
+        <a href="{{ auction.title }}" style="color: black">
             <div id="div1">
                 <img src="{{auction.image}}" width="500px" height="300px">
             </div>

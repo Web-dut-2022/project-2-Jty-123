@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path,re_path
 
 from . import views
 
@@ -9,5 +9,7 @@ urlpatterns = [
     path("register", views.register, name="register"),
     path("activeListings", views.activeListing, name="activeListing"),
     path("createListings", views.createListings, name="createListings"),
-    path("createListingView", views.createListingView, name="createListingView")
+    path("categories", views.categories, name="categories"),
+    path("createListingView", views.createListingView, name="createListingView"),
+    re_path(r'^category/(.+)/$', views.listcategory, name="listcategory"),
 ]

@@ -1,11 +1,18 @@
 body {
     padding: 10px;
 }
-#div1,#div2{
+#div1{
     border: 1px black solid;
     width: 600px;
     height: 400px;
     text-align:center;/* 让块状元素中的内容居中显示 */
     vertical-align: middle;
+    float:left;
+}
+#div2{
+    border: 1px black solid;
+    width: 600px;
+    height: 400px;
+    text-align:left;
     float:left;
 }
