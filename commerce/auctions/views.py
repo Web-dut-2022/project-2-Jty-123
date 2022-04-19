@@ -1,7 +1,7 @@
 from ast import Is
 from multiprocessing import reduction
 from re import I, S
-from turtle import title
+from turtle import tiltangle, title
 from urllib.parse import uses_relative
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -9,7 +9,7 @@ from django.db import IntegrityError
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
-from .models import User,auctions,bids, wathclist
+from .models import User,auctions,bids, comments, wathclist
 import time
 import random
 defaultimage  ="https://bkimg.cdn.bcebos.com/pic/d6ca7bcb0a46f21f73ed0799fd246b600d33ae1b?x-bce-process=image/resize,m_lfit,w_536,limit_1/format,f_jpg"
@@ -111,16 +111,22 @@ def listcategory(request,param):
         "categroy":param
     })
 
+#watchList
+@login_required
+def watchListPage(request):
+    username = request.user.get_username
+    return render(request,"auctions/watch.html",{
+        "auctions":wathclist.objects.filter(user=username)
+    })
+
 #specific Page
-
-
 def specificPage(request,param):
     t = param
     isLogin =request.user.is_authenticated
     if isLogin == False:
         username = "Anonymous"
     else:
-        username = request.user.getusername
+        username = request.user.get_username
     auction = auctions.objects.filter(title=t)
     #if owner
     if username == auction[0].createby:
@@ -147,7 +153,52 @@ def specificPage(request,param):
         "sameBuyer":sameBuyer,
         "isInWatchList":isInWatchList,
         "nowPrice":nowPrice,
-        "auction":auction[0]
+        "auction":auction[0],
+        "comments":comments.objects.filter()
+    })
+#add item
+def add(request):
+    title = request.POST["title"]
+    description = request.POST["description"]
+    startbid = request.POST["startbid"]
+    category = request.POST["category"]
+    image = request.POST["image"]
+    createTime = request.POST["createTime"]
+    username = request.user.get_username
+    wl = wathclist(user=username,title=title,description=description,startbid =startbid,category=category,image=image, createTime =createTime)
+    wl.save()
+    return render(request,"auctions/blank.html",{
+        "msg":"add success"
     })
 
+#remove item
+def remove(request):
+    title = request.POST["title"]
+    wathclist.objects.delete(title=title)
+    return render(request,"auctions/blank.html",{
+        "msg":"remove success"
+    })
 
+#close item
+def close(request):
+    title = request.POST["title"]
+    nowUser = bids.objects.filter(title=title)[0].createby
+    auctions.objects.filter(title=title).update(createby=nowUser)
+    wathclist.objects.filter(title=title).update(user=nowUser)
+    return render(request,"auctions/blank.html",{
+        "msg":"close success"
+    })
+
+#make a new bid
+def newBid(request):
+    title = request.POST["title"]
+    newBid = request.POST["newBid"]
+    bid =  bids.objects.filter(title=title)
+    if bid[0].nowbid >=newBid:
+        msg = "Error You new Bid shall be higher"
+    else:
+        bids.objects.filter(title=title).update(nowbid=newBid)
+        msg ="Bid success"
+    return render(request,"auctions/blank.html",{
+        "msg":msg
+    })

@@ -1,24 +1,37 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+
     <h2>Listing:{{auction.title}}</h2>
     <div>
         <img src="{{auction.image}}" width="500px" height="300px">
     </div>
     <div>
         {% if isInWatchList == False %}
-        <a>
-            <button class="btn btn-primary">add</button>
-        </a>
+        <form action="{% url 'add' %}" method="POST">
+            {% csrf_token %}
+            <input  type="hidden" name="title" value="{{auction.title}}">
+            <input  type="hidden" name="description" value="{{auction.description}">
+            <input  type="hidden" name="startbid" value="{{auction.startbid}}">
+            <input  type="hidden" name="category" value="{{auction.category}}">
+            <input  type="hidden" name="image" value="{{auction.image}}">
+            <input  type="hidden" name="createTime" value="{{auction.createTime}}">
+            <input class="btn btn-primary" type="submit" value="add">
+        </form>
         {%else%}
-        <a>
-            <button class="btn btn-primary">remove</button>
-        </a>
+        <form action="{% url 'remove' %}" method="POST">
+            {% csrf_token %}
+            <input  type="hidden" name="title" value="{{auction.title}}">
+            <input class="btn btn-primary" type="submit" value="remove">
+        </form>
         {%endif%}
-        {%if sameOwner == True%}
-        <a>
-            <button class="btn btn-primary">close</button>
-        </a>
+
+        {%if sameOwner == True %}
+        <form action="{% url 'close' %}" method="POST">
+            {% csrf_token %}
+            <input  type="hidden" name="title" value="{{auction.title}}">
+            <input class="btn btn-primary" type="submit" value="close">
+        </form>
         {%endif%}
 
     </div>
@@ -29,8 +42,10 @@
         <h3>Now Price: ${{ nowPrice  }}</h3>
         <br/>
         {% if user.is_authenticated %}
-        <form action="" method="">
+        <form action="{{newBids}}" method="POST">
+            {% csrf_token %}
             <div class="form-group">
+                <input  type="hidden" name="title" value="{{auction.title}}">
                 <input autofocus class="form-control" type="text" name="newBid" placeholder="Bid">
             </div>
             <input class="btn btn-primary" type="submit" value="Bid">
@@ -39,6 +54,9 @@
     </div>
     <h3>Comments</h3>
     {% for comment in comments%}
-    
+    <div>
+        <p>user:{{comment.name}}</p>
+        <p>{{comment.content}}</p>
+    </div>
     {%endfor%}
 {% endblock %}

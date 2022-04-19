@@ -37,3 +37,8 @@ class wathclist(models.Model):
     category= models.CharField('类别', max_length=64)
     image=models.CharField('图片url',max_length=256)
     createTime = models.CharField('创建时间',max_length=128)
+    
+class comments(models.Model):
+    title = models.CharField('商品名称', max_length=64)
+    name = models.CharField('用户',max_length=128)
+    content = models.CharField('用户',max_length=512)
