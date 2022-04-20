@@ -1,6 +1,9 @@
 body {
     padding: 10px;
 }
+#div3{
+    float: left;
+}
 #div1{
     border: 1px black solid;
     width: 600px;

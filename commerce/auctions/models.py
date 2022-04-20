@@ -22,6 +22,7 @@ class auctions(models.Model):
     image=models.CharField('图片url',max_length=256)
     createTime = models.CharField('创建时间',max_length=128)
     createby = models.CharField('创建者',max_length=128)
+    status = models.CharField('商品状态',max_length=128)
 
 class bids(models.Model):
     title=models.CharField('商品名称', max_length=64)

@@ -85,13 +85,13 @@ def createListingView(request):
     description=request.POST["description"]
     startingBid=request.POST["startingBid"]
     image=request.POST["image"]
-    username = request.user.getusername
+    username = request.user.get_username
     if image=="":
         image = defaultimage
     Category=request.POST["Category"]
     createTime = time.asctime( time.localtime(time.time()) )
     createTime = str(createTime)
-    auction =auctions(title=title,description=description,startbid=startingBid,image=image,category=Category,createTime=createTime,createby=username)
+    auction =auctions(title=title,description=description,startbid=startingBid,image=image,category=Category,createTime=createTime,createby=username,status = "open")
     bid = bids(title=title,nowbid=startingBid,createby=username)
     auction.save()
     bid.save()
@@ -154,7 +154,8 @@ def specificPage(request,param):
         "isInWatchList":isInWatchList,
         "nowPrice":nowPrice,
         "auction":auction[0],
-        "comments":comments.objects.filter()
+        "comments":comments.objects.filter(title=t),
+        "status":auction[0].status
     })
 #add item
 def add(request):
@@ -174,7 +175,7 @@ def add(request):
 #remove item
 def remove(request):
     title = request.POST["title"]
-    wathclist.objects.delete(title=title)
+    wathclist.objects.filter(title=title).delete()
     return render(request,"auctions/blank.html",{
         "msg":"remove success"
     })
@@ -183,7 +184,7 @@ def remove(request):
 def close(request):
     title = request.POST["title"]
     nowUser = bids.objects.filter(title=title)[0].createby
-    auctions.objects.filter(title=title).update(createby=nowUser)
+    auctions.objects.filter(title=title).update(createby=nowUser,status="close")
     wathclist.objects.filter(title=title).update(user=nowUser)
     return render(request,"auctions/blank.html",{
         "msg":"close success"
@@ -201,4 +202,15 @@ def newBid(request):
         msg ="Bid success"
     return render(request,"auctions/blank.html",{
         "msg":msg
+    })
+
+#add new Comment
+def newComment(request):
+    title = request.POST["title"]
+    comment = request.POST["comments"]
+    username = request.user.username
+    ncomments = comments(title=title,content =comment,name=username)
+    ncomments.save()
+    return render(request,"auctions/blank.html",{
+        "msg":"comment success"
     })

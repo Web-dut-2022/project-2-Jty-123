@@ -3,8 +3,9 @@
 {% block body %}
     <h2>All Categories</h2>
     {%for auction in auctions %}
-    <ui>
+        <div id ="div3">
         <a href="../../category/{{auction.category}}" >{{auction.category}}</a>
-    </ui>
+        </div>
+        <br/>
     {% endfor %}
 {% endblock %}

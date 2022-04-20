@@ -3,9 +3,10 @@
 {% block body %}
     <h2>Active Listings</h2>
     {%for auction in auctions %}
-    <ui>
+    
+        <div id ="div3">
         <a href="./specific/{{auction.title}}" style="color: black">
-            <div id="div1">
+            <div id ="div1">
                 <img src="{{auction.image}}" width="500px" height="300px">
             </div>
             <div id="div2">
@@ -19,6 +20,7 @@
                 <p>Created {{ auction.createTime }}</p>
             </div>
         </a>
-    </ui>
+        </div>
+    
     {% endfor %}
 {% endblock %}

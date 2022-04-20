@@ -3,7 +3,7 @@
 {% block body %}
     <h2>Watching Listings {{auction.title}}</h2>
     {%for auction in auctions %}
-    <ui>
+        <div id="div3">
         <a href="./specific/{{auction.title}}" style="color: black;">
             <div id="div1">
                 <img src="{{auction.image}}" width="500px" height="300px">
@@ -13,12 +13,11 @@
                 <br/>
                 <h3>Price: ${{ auction.startbid }}</h3>
                 <br/>
-                <h3>Description:</h3>
-                <h4>{{ auction.description }}</h4>
+                <h3>Description:{{ auction.description }}</h3>
                 <br/>
                 <p>Created {{ auction.createTime }}</p>
             </div>
         </a>
-    </ui>
+    </div>
     {% endfor %}
 {% endblock %}

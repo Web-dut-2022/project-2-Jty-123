@@ -13,9 +13,10 @@ urlpatterns = [
     path("createListingView", views.createListingView, name="createListingView"),
     re_path(r'^category/(.+)/$', views.listcategory, name="listcategory"),
     re_path(r'^specific/(.+)/$', views.specificPage, name="specificPage"),
-    re_path(r'^newBid/(.+)/$', views.newBid, name="newBids"),
+    path("newBid", views.newBid, name="newBids"),
     path("add",views.add,name="add"),
     path("remove",views.remove,name="remove"),
     path("close",views.close,name="close"),
-    path("watchlist",views.watchListPage,name="watchlist")
+    path("watchlist",views.watchListPage,name="watchlist"),
+    path("content",views.newComment,name="newComment")
 ]
